@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Cancel Registration{% endblock %}
+
+{% block content %}
+<h2>Are you sure you want to cancel your registration?</h2>
+<p>Event: {{ registration.event.name }}</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Cancel Registration</button>
+    <a href="{% url 'my_registrations' %}" class="btn btn-secondary">Back to My Registrations</a>
+</form>
+{% endblock %}

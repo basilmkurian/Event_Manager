@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}My Registrations{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">My Registrations</h2>
+
+    {% if registrations %}
+    <div class="row">
+        {% for registration in registrations %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ registration.event.name }}</h5>
+                    <p class="card-text">{{ registration.event.description|truncatewords:20 }}</p>
+                    <p class="text-muted mb-2"><i class="bi bi-calendar-event"></i> {{ registration.event.start_time|date:"M d, Y H:i" }}</p>
+                    <p class="text-muted"><i class="bi bi-geo-alt"></i> {{ registration.event.location }}</p>
+                    <p class="text-muted">Registered on: {{ registration.registered_at|date:"M d, Y H:i" }}</p>
+                    <div class="mt-auto">
+                        <a href="{% url 'event_detail' registration.event.id %}" class="btn btn-primary w-100 mb-2">View
+                            Details</a>
+                        <form method="post" action="{% url 'delete_registration' registration.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger w-100">Cancel Registration</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info text-center" role="alert">
+        You have not registered for any events.
+    </div>
+    {% endif %}
+
+    <div class="text-center mt-3">
+        <a href="{% url 'event_list' %}" class="btn btn-secondary">Back to Event List</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+<!-- templates/events/event_detail.html -->
+{% extends 'base.html' %}
+
+{% block title %}Event Details{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">{{ event.name }}</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">{{ event.name }}</h5>
+                    <p class="card-text">{{ event.description }}</p>
+                    <p class="text-muted"><i class="bi bi-calendar-event"></i> {{ event.start_time|date:"M d, Y H:i" }} - {{ event.end_time|date:"M d, Y H:i" }}</p>
+                    <p class="text-muted"><i class="bi bi-geo-alt"></i> {{ event.location }}</p>
+                    <p class="text-muted"><i class="bi bi-people"></i> Capacity: {{ event.capacity }} attendees</p>
+                    <p class="text-muted"><i class="bi bi-person-circle"></i> Created by: {{ event.created_by.username }}</p>
+                    <div class="mt-4">
+                        {% if user.is_authenticated %}
+                        {% if event.created_by == user %}
+                        <a href="{% url 'view_registrations' event.id %}" class="btn btn-success w-100 mb-2">View Registrations</a>
+                        <a href="{% url 'update_event' event.id %}" class="btn btn-success w-100 mb-2">Update Event</a>
+                        <form method="post" action="{% url 'delete_event' event.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger w-100">Delete Event</button>
+                        </form>
+                        {% else %}
+                        <form method="post" action="{% url 'register_event' event.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary w-100">Register for Event</button>
+                        </form>
+                        {% endif %}
+                        {% else %}
+                        <p class="text-center"><a href="{% url 'login' %}" class="btn btn-secondary w-100">Log in to
+                                register or manage this event</a></p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="text-center mt-3">
+        <a href="{% url 'event_list' %}" class="btn btn-secondary">Back to Event List</a>
+    </div>
+</div>
+{% endblock %}

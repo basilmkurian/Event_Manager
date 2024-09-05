@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}My Events{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">My Created Events</h2>
+
+    {% if events %}
+    <div class="row">
+        {% for event in events %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ event.name }}</h5>
+                    <p class="card-text">{{ event.description|truncatewords:20 }}</p>
+                    <p class="text-muted mb-2"><i class="bi bi-calendar-event"></i> {{ event.start_time|date:"M d, Y H:i" }}</p>
+                    <p class="text-muted"><i class="bi bi-geo-alt"></i> {{ event.location }}</p>
+                    <div class="mt-auto">
+                        <a href="{% url 'event_detail' event.id %}" class="btn btn-primary w-100 mb-2">View Details</a>
+                        <a href="{% url 'update_event' event.id %}" class="btn btn-success w-100 mb-2">Update</a>
+                        <form method="post" action="{% url 'delete_event' event.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger w-100">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info text-center" role="alert">
+        You haven't created any events yet. Start by creating a new event!
+    </div>
+    {% endif %}
+
+    <div class="text-center mt-3">
+        <a href="{% url 'create_event' %}" class="btn btn-secondary">Create New Event</a>
+    </div>
+</div>
+{% endblock %}
