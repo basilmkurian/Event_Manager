@@ -1,0 +1,27 @@
+# .gitignore
+
+# Python
+*.pyc
+__pycache__/
+
+# Django
+*.sqlite3
+*.log
+
+# Virtual Environment
+venv/
+env/
+.venv/
+
+# Environment variables
+.env
+
+# Node modules (if using frontend assets like npm)
+node_modules/
+
+# Static files (collected during deployment)
+staticfiles/
+
+# IDE specific
+.vscode/
+.idea/
